@@ -2,8 +2,7 @@
 //  ViewController.swift
 //  Xylophone
 //
-//  Created by Angela Yu on 27/01/2016.
-//  Copyright © 2016 London App Brewery. All rights reserved.
+
 //
 
 import UIKit
@@ -13,16 +12,23 @@ class ViewController: UIViewController{
     
     
     var audioPlayer: AVAudioPlayer?
+    
+    var selectedSoundTypeName : String = ""
+    
+    let soundArray = ["note1","note2","note3","note4","note5","note6","note7"]
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-
+   
 
     @IBAction func notePressed(_ sender: UIButton) {
-     
-        guard let url = Bundle.main.url(forResource: "note1", withExtension: "wav") else { return }
+    
+         selectedSoundTypeName = soundArray[sender.tag - 1]    /* sender.tag for pick the particular sound from the sound array*/
+        playSound()
+    
+    }
+    
+    func playSound(){
+        
+        guard let url = Bundle.main.url(forResource: selectedSoundTypeName, withExtension: "wav") else { return }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -31,14 +37,13 @@ class ViewController: UIViewController{
             
             
             /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-          audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
             
-            /* iOS 10 and earlier require the following line:
-             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
+            
             
             guard let audioPlayer =  audioPlayer else { return }
             
-          audioPlayer.play()
+            audioPlayer.play()
             
         } catch let error {
             print(error.localizedDescription)
