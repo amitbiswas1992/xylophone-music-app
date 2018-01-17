@@ -8,12 +8,12 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController{
+class ViewController: UIViewController {
     
     
     var audioPlayer: AVAudioPlayer?
     
-    var selectedSoundTypeName : String = ""
+    
     
     let soundArray = ["note1","note2","note3","note4","note5","note6","note7"]
 
@@ -21,12 +21,12 @@ class ViewController: UIViewController{
 
     @IBAction func notePressed(_ sender: UIButton) {
     
-         selectedSoundTypeName = soundArray[sender.tag - 1]    /* sender.tag for pick the particular sound from the sound array*/
-        playSound()
+        /* sender.tag for pick the particular sound from the sound array*/
+        playSound(selectedSoundTypeName: soundArray[sender.tag - 1] )
     
     }
     
-    func playSound(){
+    func playSound(selectedSoundTypeName: String ){
         
         guard let url = Bundle.main.url(forResource: selectedSoundTypeName, withExtension: "wav") else { return }
         
@@ -36,7 +36,7 @@ class ViewController: UIViewController{
             
             
             
-            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly */
             
             audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
             
